@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import httpx
+from datetime import datetime
 
 from db import get_db_connection  # ← işte burada db.py'yi kullanıyoruz
 
@@ -47,6 +48,40 @@ def create_better_prompt(user_input: str, history: list) -> str:
 @app.get("/", response_class=HTMLResponse)
 def get_form(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "bot_response": ""})
+
+@app.get("/tests", response_class=HTMLResponse)
+def get_tests(request: Request):
+    conn = None
+    tests = []
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, title, description, created_by, created_at FROM tests ORDER BY created_at DESC")
+        tests = cursor.fetchall()
+    except Exception as e:
+        print(f"Test listesi hatası: {e}")
+    finally:
+        if conn:
+            conn.close()
+    
+    return templates.TemplateResponse("tests.html", {"request": request, "tests": tests})
+
+@app.post("/tests", response_class=HTMLResponse)
+async def add_test(request: Request, title: str = Form(...), description: str = Form(...), created_by: str = Form(...)):
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO tests (title, description, created_by, created_at) VALUES (?, ?, ?, ?)", 
+                      (title, description, created_by, datetime.now()))
+        conn.commit()
+    except Exception as e:
+        print(f"Test ekleme hatası: {e}")
+    finally:
+        if conn:
+            conn.close()
+    
+    return await get_tests(request)
 
 @app.post("/", response_class=HTMLResponse)
 async def post_form(request: Request, user_input: str = Form(...)):

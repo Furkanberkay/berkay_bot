@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testler - Berkay Bot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="/">🤖 Berkay Bot</a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Chat</a>
+                <a href="/tests" class="nav-link active">Testler</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>🧪 Testler</h1>
+            <p>Test ekleyin ve görüntüleyin</p>
+        </header>
+
+        <div class="tests-container">
+            <!-- Test Ekleme Formu -->
+            <div class="add-test-section">
+                <h2>Yeni Test Ekle</h2>
+                <form method="post" class="test-form">
+                    <div class="form-group">
+                        <label for="title">Test Başlığı:</label>
+                        <input type="text" id="title" name="title" placeholder="Test başlığını girin..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Test Açıklaması:</label>
+                        <textarea id="description" name="description" placeholder="Test açıklamasını girin..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="created_by">Ekleyen Kişi:</label>
+                        <input type="text" id="created_by" name="created_by" placeholder="Adınızı girin..." required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Test Ekle</button>
+                </form>
+            </div>
+
+            <!-- Test Listesi -->
+            <div class="tests-list-section">
+                <h2>Mevcut Testler</h2>
+                {% if tests %}
+                    <div class="tests-grid">
+                        {% for test in tests %}
+                        <div class="test-card">
+                            <div class="test-header">
+                                <h3>{{ test[1] }}</h3>
+                                <span class="test-date">{{ test[4][:10] if test[4] else '' }}</span>
+                            </div>
+                            <div class="test-description">
+                                {{ test[2] }}
+                            </div>
+                            <div class="test-footer">
+                                <span class="test-author">👤 {{ test[3] }}</span>
+                                <span class="test-id">#{{ test[0] }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-tests">
+                        <p>Henüz test eklenmemiş. İlk testi siz ekleyin! 🎯</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

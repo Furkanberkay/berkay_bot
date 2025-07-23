@@ -20,6 +20,17 @@ def init_database():
             )
         """)
         
+        # Tests tablosunu oluştur
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                created_by TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
         conn.commit()
         print("Veritabanı ve tablolar başarıyla oluşturuldu!")
         
