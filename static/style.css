@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 30px;
+}
+
+h1 {
+    color: #333;
+}
+
+input, button {
+    padding: 6px 10px;
+    font-size: 16px;
+}

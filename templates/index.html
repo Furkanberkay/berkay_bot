@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Yapay Zekâ Botuna Hoş Geldin!</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Yapay Zekâ Botuna Hoş Geldin!</h1>
+
+    <form method="post">
+        <input type="text" name="user_input" placeholder="Bir şey yaz..." required>
+        <button type="submit">Gönder</button>
+    </form>
+
+    <h2>Botun Cevabı:</h2>
+    {% if bot_reply %}
+        <p>{{ bot_reply }}</p>
+    {% else %}
+        <p>An error occurred:</p>
+    {% endif %}
+</body>
+</html>
